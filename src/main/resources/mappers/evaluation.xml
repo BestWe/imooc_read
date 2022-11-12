@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.reader.mapper.EvaluationMapper">
+    <!--    List<Evaluation> list();-->
+    <select id="list" resultMap="queryAllComment">
+        SELECT e.evaluation_id,
+               e.content,
+               e.score,
+               e.member_id,
+               e.book_id,
+               e.enjoy,
+               e.create_time,
+               e.state,
+               e.disable_reason,
+               e.disable_time,
+               b.book_name,
+               m.nickname
+        FROM evaluation e
+                 LEFT JOIN member m on e.member_id = m.member_id
+                 LEFT JOIN book b on b.book_id = e.book_id
+    </select>
+    <resultMap id="queryAllComment" type="Evaluation">
+        <id column="evaluation_id" property="evaluationId"/>
+        <result column="content" property="content"/>
+        <result column="score" property="score"/>
+        <result column="create_time" property="createTime"/>
+        <result column="member_id" property="memberId"/>
+        <result column="book_id" property="bookId"/>
+        <result column="enjoy" property="enjoy"/>
+        <result column="state" property="state"/>
+        <result column="disable_reason" property="disableReason"/>
+        <result column="disable_time" property="disableTime"/>
+        <association property="member" javaType="Member">
+            <id column="member_id" property="memberId"/>
+            <result column="nickname" property="nickname"/>
+        </association>
+        <association property="book" javaType="Book">
+            <id column="book_id" property="bookId"/>
+            <result column="book_name" property="bookName"/>
+        </association>
+    </resultMap>
+</mapper>
